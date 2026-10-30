@@ -372,7 +372,7 @@ fun ZavadaNovaScreen(s: AppState) {
         AppBar("Nahlásit závadu") { s.back() }
         Crumbs("Závady", "Nová")
         TitleText("Co nefunguje?")
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(0.dp)) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             CATS.forEach { (c, ic) -> IskamChip(c, d.cat == c, icon = ic) { s.draft = d.copy(cat = c) } }
         }
         OutlinedTextField(
@@ -448,11 +448,11 @@ fun RezervaceNovaScreen(s: AppState) {
     ScreenScaffold {
         AppBar("Nová rezervace") { s.back() }
         TitleText("Místnost")
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             ROOMS.forEach { (r, ic) -> IskamChip(r, d.room == r, icon = ic) { s.resDraft = d.copy(room = r, slot = null) } }
         }
         TitleText("Den")
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             DAYS.forEach { day -> IskamChip(day, d.day == day) { s.resDraft = d.copy(day = day, slot = null) } }
         }
         if (d.room != null && d.day != null) {
@@ -500,7 +500,7 @@ private val FREE_ROOMS = listOf(
 @Composable
 fun PokojeScreen(s: AppState) = ScreenScaffold {
     AppBar("Volné pokoje") { s.back() }
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         listOf("vse" to "Vše", "1" to "Jednolůžkové", "2" to "Dvoulůžkové").forEach { (k, l) ->
             IskamChip(l, s.roomFilter == k) { s.roomFilter = k }
         }

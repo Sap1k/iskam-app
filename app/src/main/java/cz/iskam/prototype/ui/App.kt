@@ -222,7 +222,7 @@ private fun SheetHost(s: AppState, sheet: Sheet) {
                     var pick by remember { mutableIntStateOf(1) }
                     H("Ukončit ubytování?", 24.sp)
                     Body("Vyber, ke kdy chceš odejít. Hospodářka pak navrhne termín předání pokoje a vrácení jistiny.")
-                    androidx.compose.foundation.layout.FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    androidx.compose.foundation.layout.FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         listOf("30. 11.", "31. 12.", "31. 1.", "Jiné datum").forEachIndexed { i, d -> IskamChip(d, pick == i) { pick = i } }
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {

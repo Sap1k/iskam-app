@@ -429,11 +429,12 @@ fun IskamChip(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
+    val cs = MaterialTheme.colorScheme
     FilterChip(
         selected = selected,
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier.height(38.dp),
+        modifier = modifier,
         label = {
             Text(
                 text, fontWeight = FontWeight.SemiBold, maxLines = 1,
@@ -445,6 +446,12 @@ fun IskamChip(
             icon != null -> ({ Icon(icon, null, Modifier.size(FilterChipDefaults.IconSize)) })
             else -> null
         },
+        colors = FilterChipDefaults.filterChipColors(
+            selectedContainerColor = cs.secondaryContainer,
+            selectedLabelColor = cs.onSecondaryContainer,
+            selectedLeadingIconColor = cs.onSecondaryContainer,
+            iconColor = cs.onSurfaceVariant,
+        ),
     )
 }
 
