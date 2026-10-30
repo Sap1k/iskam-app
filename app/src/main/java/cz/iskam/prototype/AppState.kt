@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 
 // Prototype only: everything below is hard-coded demo data, nothing talks to a backend.
@@ -64,11 +65,12 @@ data class Notif(
 data class Defect(
     val id: String, val cat: String, val icon: ImageVector, val title: String,
     val date: String, val st: Int, val reminded: Boolean = false,
+    val photos: List<ImageBitmap> = emptyList(),
 )
 
 data class Reservation(val id: String, val room: String, val icon: ImageVector, val time: String)
 
-data class DefectDraft(val cat: String? = null, val text: String = "", val photo: Boolean = false)
+data class DefectDraft(val cat: String? = null, val text: String = "", val photos: List<ImageBitmap> = emptyList())
 data class ResDraft(val room: String? = null, val day: String? = null, val slot: String? = null)
 
 sealed interface Sheet {
