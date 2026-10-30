@@ -241,32 +241,53 @@ fun KartaScreen(s: AppState) {
     }
 }
 
-/** Decorative QR: three finder squares + pseudo-random modules, same generator as the prototype. */
+// The "payment" QR is a real, scannable QR code... for youtube.com/watch?v=dQw4w9WgXcQ
+private val QR_ROWS = listOf(
+    "111111101001110100100001001111111",
+    "100000100111111000110000001000001",
+    "101110100010101111110101001011101",
+    "101110101101100011000110001011101",
+    "101110101100000011010110001011101",
+    "100000101110100101001111101000001",
+    "111111101010101010101010101111111",
+    "000000001001001001111100100000000",
+    "100010111010100101001111011111001",
+    "010001010011000111100111010001101",
+    "101011111000011100100001010001010",
+    "001010010010110010011010111000000",
+    "101100101010110010000011101101001",
+    "101111010011001001111000110100100",
+    "001011100011101101101101111010010",
+    "111110010011011111100101011100000",
+    "110111101100100001111110101011010",
+    "110011011110000110101011100001110",
+    "101110110010110111001111110101010",
+    "011010010010110101101100111100010",
+    "101001110101011000111000001111000",
+    "100101000000100011010010001001110",
+    "000011110001101010110101110000110",
+    "000111011010010001111110011011011",
+    "111010110011011111001110111111010",
+    "000000001011011111000111100010100",
+    "111111101110001100100000101011000",
+    "100000100001001110010010100010001",
+    "101110101001111010010010111111001",
+    "101110100110110000111001001111110",
+    "101110100100101100101100011111000",
+    "100000100001110111100101101000000",
+    "111111101010000001011111111001001",
+)
+
 @Composable
 private fun FakeQr() {
-    val cells = remember {
-        val out = mutableListOf<Pair<Int, Int>>()
-        var x = 4350L
-        fun inFinder(i: Int, j: Int) = (i < 8 && j < 8) || (i < 8 && j > 20) || (i > 20 && j < 8)
-        for (i in 0 until 29) for (j in 0 until 29) {
-            if (inFinder(i, j)) continue
-            x = (x * 1103515245L + 12345L) and 0x7fffffffL
-            if (x % 7 < 3) out += i to j
-        }
-        fun finder(r: Int, c: Int) {
-            for (i in 0 until 7) for (j in 0 until 7) {
-                val ring = i == 0 || i == 6 || j == 0 || j == 6
-                val core = i in 2..4 && j in 2..4
-                if (ring || core) out += (r + i) to (c + j)
-            }
-        }
-        finder(0, 0); finder(0, 22); finder(22, 0)
-        out
-    }
     Box(Modifier.size(170.dp).background(Color.White, RoundedCornerShape(12.dp)).padding(10.dp)) {
         Canvas(Modifier.size(150.dp)) {
-            val m = size.width / 29f
-            cells.forEach { (i, j) -> drawRect(Color(0xFF111111), Offset(j * m, i * m), Size(m + .5f, m + .5f)) }
+            val m = size.width / QR_ROWS.size
+            QR_ROWS.forEachIndexed { i, row ->
+                row.forEachIndexed { j, c ->
+                    if (c == '1') drawRect(Color(0xFF111111), Offset(j * m, i * m), Size(m + .5f, m + .5f))
+                }
+            }
         }
     }
 }

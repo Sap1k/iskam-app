@@ -43,6 +43,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.ShortNavigationBar
 import androidx.compose.material3.ShortNavigationBarItem
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -74,30 +75,33 @@ fun IskamApp(s: AppState, dark: Boolean) {
     IskamTheme(dark) {
         val cur = s.current
         BackHandler(enabled = s.stack.size > 1) { s.back() }
-        Box(Modifier.fillMaxSize()) {
-            val spatial = MaterialTheme.motionScheme.defaultSpatialSpec<androidx.compose.ui.unit.IntOffset>()
-            AnimatedContent(
-                targetState = cur,
-                contentKey = { it.id },
-                transitionSpec = {
-                    when (s.dir) {
-                        NavDir.Fwd -> (slideInHorizontally(spatial) { it / 7 } + fadeIn(tween(220))) togetherWith fadeOut(tween(200))
-                        NavDir.Back -> (slideInHorizontally(spatial) { -it / 7 } + fadeIn(tween(220))) togetherWith fadeOut(tween(200))
-                        NavDir.Fade -> (slideInVertically(spatial) { it / 40 } + fadeIn(tween(260))) togetherWith fadeOut(tween(180))
-                    }
-                },
-                label = "screen",
-            ) { route -> ScreenHost(s, route, dark) }
+        // Surface supplies onSurface as LocalContentColor; without it plain Text falls back to black
+        Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onSurface) {
+            Box(Modifier.fillMaxSize()) {
+                val spatial = MaterialTheme.motionScheme.defaultSpatialSpec<androidx.compose.ui.unit.IntOffset>()
+                AnimatedContent(
+                    targetState = cur,
+                    contentKey = { it.id },
+                    transitionSpec = {
+                        when (s.dir) {
+                            NavDir.Fwd -> (slideInHorizontally(spatial) { it / 7 } + fadeIn(tween(220))) togetherWith fadeOut(tween(200))
+                            NavDir.Back -> (slideInHorizontally(spatial) { -it / 7 } + fadeIn(tween(220))) togetherWith fadeOut(tween(200))
+                            NavDir.Fade -> (slideInVertically(spatial) { it / 40 } + fadeIn(tween(260))) togetherWith fadeOut(tween(180))
+                        }
+                    },
+                    label = "screen",
+                ) { route -> ScreenHost(s, route, dark) }
 
-            AnimatedVisibility(
-                visible = cur.screen.tab,
-                modifier = Modifier.align(Alignment.BottomCenter),
-                enter = slideInVertically { it } + fadeIn(),
-                exit = slideOutVertically { it } + fadeOut(),
-            ) { BottomNav(s) }
+                AnimatedVisibility(
+                    visible = cur.screen.tab,
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    enter = slideInVertically { it } + fadeIn(),
+                    exit = slideOutVertically { it } + fadeOut(),
+                ) { BottomNav(s) }
 
-            SnackHost(s, Modifier.align(Alignment.BottomCenter))
-            s.sheet?.let { SheetHost(s, it) }
+                SnackHost(s, Modifier.align(Alignment.BottomCenter))
+                s.sheet?.let { SheetHost(s, it) }
+            }
         }
     }
 }
